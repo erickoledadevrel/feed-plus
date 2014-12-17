@@ -1,0 +1,65 @@
+<table>
+  <tr>
+    <td style="vertical-align:top; padding-right:1em;">
+      <a href="<?= item.actor.url ?>"><img src="<?= item.actor.image.url ?>"/></a>
+    </td>
+    <td style="vertical-align:top;">
+      <div style="margin-bottom:1em;">
+        <a href="<?= item.actor.url ?>" style="font-weight:bold"><?!= item.actor.displayName ?></a>
+        <span>
+          <?= new Date(item.published).toUTCString() ?>
+          <? if (item.provider && item.provider.title) { ?>
+            - <?= item.provider.title ?>
+          <? } ?>
+          <? if (item.access && item.access.description) { ?>
+            - <?= item.access.description ?>
+          <? } ?>
+        </span>
+      </div>
+
+      <!-- Object -->
+      <? if (item.object.objectType == 'note') { ?>
+        <div><?!= item.object.content ?></div>
+      <? } else if (item.object.objectType == 'activity') { ?>
+        <? if (item.annotation) { ?>
+          <div><?!= item.annotation ?></div>
+          <hr style="margin:1em 0"/>
+        <? } ?>
+        <?!= renderTemplate_('Activity', {'item': item}) ?>
+      <? } ?>
+
+      <!-- Attachments -->
+      <? if (item.object.attachments) { ?>
+        <hr style="margin:1em 0"/>
+
+        <!-- Article -->
+        <? if (item.object.attachmentsMap.article) { ?>
+          <?!= renderTemplate_('Article', {
+                 'article': item.object.attachmentsMap.article,
+                 'photo': item.object.attachmentsMap.photo}) ?>
+
+        <!-- Photo -->
+        <? } else if (item.object.attachmentsMap.photo) { ?>
+          <? for (var i = 0; i < item.object.attachmentsMultiMap.photo.length; i++) { ?>
+            <?!= renderTemplate_('Photo', {'photo': item.object.attachmentsMultiMap.photo[i]}) ?>
+          <? } ?>
+
+        <!-- Album -->
+        <? } else if (item.object.attachmentsMap.album) { ?>
+          <?!= renderTemplate_('Album', {'album': item.object.attachmentsMap.album}) ?>
+
+        <!-- Video -->
+        <? } else if (item.object.attachmentsMap.video) { ?>
+          <?!= renderTemplate_('Video', {
+                 'video': item.object.attachmentsMap.video,
+                 'disableEmbed': options.disableEmbed}) ?>
+
+        <!-- Event -->
+        <? } else if (item.object.attachmentsMap.event) { ?>
+          <?!= renderTemplate_('Event', {'event': item.object.attachmentsMap.event}) ?>
+
+        <? } ?>
+      <? } ?>
+    </td>
+  </tr>
+</table>

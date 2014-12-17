@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <? includeFile_(output, 'Stylesheet') ?>
+    <? includeFile_(output, 'JavaScript') ?>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="messages">
+        <div id="message">
+          <span id="message-content"></span>
+          <a id="dismiss" href="#">Dismiss</a>
+        </div>
+      </div>
+      <div id="main">
+        <table id="layout">
+          <tr>
+            <td id="header" colspan="2">
+              <h1>Feed+</h1>
+            </td>
+          </tr>
+          <tr>
+            <td id="left">
+              <h2>Configure</h2>
+              <div id="controls">
+                <form>
+                  <div>
+                    <p>Which type of feed?</p>
+                    <div>
+                      <input type="radio" name="type" value="user" id="type-user" checked />
+                      <label for="type-user">User's or Page's Public Feed</label>
+                    </div>
+                    <div>
+                      <input type="radio" name="type" value="query" id="type-query" />
+                      <label for="type-query">Search Results</label>
+                    </div>
+                  </div>
+                  <div>
+                    <p>Enter the
+                      <span id="input-user">user or page's profile ID or URL:</span>
+                      <span id="input-query" style="display:none;">search terms:</span>
+                    </p>
+                    <input type="text" name="input" id="input" />
+                  </div>
+                  <p>
+                    <button id="preview">Preview</button>
+                    <button id="add" disabled>Add</button>
+                    <input id="name" type="text" name="name" disabled/>
+                  </p>
+                </form>
+              </div>
+              <h2>Feed Library</h2>
+              <div id="library-container"></div>
+            </td>
+            <td id="right">
+              <h2>Preview</h2>
+              <div id="preview-container">
+                <p>Configure a feed in the panel to the left and click the "Preview" button to see a preview what the feed will contain.</p>
+                <? includeFile_(output, 'Notes') ?>
+                <? includeFile_(output, 'PrivacyPolicy') ?>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td id="footer" colspan="2">
+              <div>
+                Created by <a href="https://plus.google.com/u/0/103231502413952116096/posts" target="_blank">Eric Koleda</a>
+                using <a href="http://script.google.com/start" target="_blank">Google Apps Script</a> |
+                More details in the <a href="https://chrome.google.com/webstore/detail/feed%20/eaiadkmgpppkonfodnepmoknpaphnlij">Chrome Web Store</a> |
+                <a id="privacy-policy-link" href="#">Privacy Policy</a> |
+                Now serving <span id="num-feeds">...</span> feeds
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

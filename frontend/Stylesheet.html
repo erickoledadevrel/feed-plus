@@ -1,0 +1,187 @@
+<!-- Load the jQuery UI CSS -->
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
+
+<style>
+  /* Specific element. */
+  #wrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: auto;
+    top: 0px;
+    background-color: #F1F1F1;
+    font-family: arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  #messages {
+    position: absolute;
+    top: 5px;
+    width: 100%;
+    text-align: center;
+    z-index: 1201!important;
+  }
+  #message {
+    padding: 5px;
+    width: 1000px;
+    margin: 0 auto;
+    box-shadow: rgba(0, 0, 0, .2) 0 1px 3px;
+    -webkit-box-shadow: rgba(0, 0, 0, .2) 0 1px 3px;
+    -moz-box-shadow: rgba(0, 0, 0, .2) 0 1px 3px;
+    display: none;
+  }
+  #main {
+    width: 1050px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .05);
+    -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, .05);
+    -moz-box-shadow: 0 2px 4px rgba(0,0,0,.05);
+  }
+  #main a {
+    color: #36C;
+    text-decoration: none;
+  }
+  #main a:hover {
+    text-decoration: underline;
+  }
+  h1, h2 {
+    margin-top: 0;
+  }
+  #layout td {
+    vertical-align: top;
+    overflow: hidden;
+  }
+  #left {
+    width: 400px;
+    max-width: 400px;
+    border-right: 1px solid #E9E9E9
+  }
+  #right {
+    padding-left: 20px;
+  }
+  #input {
+    width: 350px;
+  }
+  #name {
+    width: 223px;
+  }
+  #preview-container {
+    width: 630px;
+    height: 600px;
+    max-height: 600px;
+    overflow: auto;
+  }
+  #preview-container .item {
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .05);
+    -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, .05);
+    -moz-box-shadow: 0 2px 4px rgba(0,0,0,.05);
+    background-color: white;
+    border-color: #CCC;
+    border-style: solid;
+    border-width: 1px;
+    margin: 20px 20px 20px 0;
+    padding: 10px;
+    /*max-height: 800px;*/
+    overflow: auto;
+  }
+  #preview-container .item hr {
+    border: 1px solid #E9E9E9
+  }
+  #library-container {
+    height: 340px;
+    overflow: auto;
+  }
+  #library-container table {
+    width: 372px;
+    border-spacing: 0;
+    border-collapse: collapse;
+  }
+  #library-container td {
+    border-color: #CCC;
+    border-style: solid;
+    border-width: 1px;
+    padding: 0 3px;
+    vertical-align: middle;
+    text-align: center;
+  }
+  #library-container td.first {
+    text-align: left;
+    width: 100%;
+  }
+  #footer {
+    padding-top: 10px;
+  }
+
+  /* Classes */
+  .info {
+    background-color: #F9EDBE;
+    border: 1px solid #F0C36D;
+  }
+  .error {
+    background-color: #DD4B39;
+    border: 1px solid #602019;
+  }
+
+  /* Generic look-and-feel. */
+  button {
+    background-color: whiteSmoke;
+    border: 1px solid gainsboro;
+    border-radius: 2px;
+    font-size: 11px;
+    line-height: 27px;
+    padding: 0 10px;
+    font-weight: bold;
+    color: #444;
+  }
+  button:hover {
+    background-color: #f8f8f8;
+    border-color: #c6c6c6;
+    color: #333;
+    box-shadow: rgba(0, 0, 0, .1) 0 1px 1px;
+    -webkit-box-shadow: rgba(0, 0, 0, .1) 0 1px 1px;
+    -moz-box-shadow: rgba(0, 0, 0, .1) 0 1px 1px;
+  }
+  button:active {
+    background-color: #eee;
+    box-shadow: rgba(0, 0, 0, .1) 0 1px 1px 0 inset;
+    -webkit-box-shadow: rgba(0, 0, 0, .1) 0 1px 1px 0 inset;
+    -moz-box-shadow: rgba(0, 0, 0, .1) 0 1px 1px 0 inset;
+  }
+  button[disabled] {
+    color: #B8B8B8;
+  }
+  button[disabled]:hover {
+    background-color: whiteSmoke;
+    border-color: gainsboro;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+  }
+  input[type=text] {
+    border-radius: 1px;
+    border: 1px solid gainsboro;
+    padding: 5px 10px;
+    vertical-align: bottom;
+  }
+  input[type=text]:hover {
+    box-shadow: rgba(0, 0, 0, .1) 0 1px 2px 0 inset;
+    -webkit-box-shadow: rgba(0, 0, 0, .1) 0 1px 2px 0 inset;
+    -moz-box-shadow: rgba(0, 0, 0, .1) 0 1px 2px 0 inset;
+  }
+  input[type=text]:focus {
+    border: 1px solid #4d90fe;
+    outline: none;
+    box-shadow: rgba(0, 0, 0, .3) 0 1px 2px 0 inset;
+    -webkit-box-shadow: rgba(0, 0, 0, .3) 0 1px 2px 0 inset;
+    -moz-box-shadow: rgba(0, 0, 0, .3) 0 1px 2px 0 inset;
+  }
+</style>

@@ -1,0 +1,7 @@
+<div>
+  <a href="<?= album.thumbnails[0].url ?>"><img src="<?= album.thumbnails[0].image.url ?>" style="max-width:500px;"/></a><br/>
+  <a href="<?= album.url ?>"><?= album.displayName ?></a><br/>
+  <? for (var i = 1; i < album.thumbnails.length; i++) { ?>
+    <a href="<?= album.thumbnails[i].url ?>"><img src="<?= album.thumbnails[i].image.url ?>" style="max-width:500px;"/></a>
+  <? } ?>
+</div>

@@ -1,0 +1,15 @@
+<table>
+  <tr>
+    <td style="vertical-align:top; padding-right:1em;">
+      <a href="<?= item.object.actor.url ?>"><img src="<?= item.object.actor.image.url ?>"/></a>
+    </td>
+    <td style="vertical-align:top;">
+      <div style="margin-bottom:1em;">
+        <a href="<?= item.object.actor.url ?>" style="font-weight:bold"><?!= item.object.actor.displayName ?></a>
+        originally shared this
+        <a href="<?= item.object.url ?>">post</a>:
+      </div>
+      <div><?!= item.object.content ?></div>
+    </td>
+  </tr>
+</table>

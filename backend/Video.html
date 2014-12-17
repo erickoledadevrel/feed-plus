@@ -1,0 +1,10 @@
+<div>
+  <? if (video.embed && video.embed.url && !disableEmbed) { ?>
+    <iframe width="560" height="315" src="<?= video.embed.url.replace('&autoplay=1', '') ?>" frameborder="0" allowfullscreen></iframe>
+  <? } else { ?>
+    <div><a href="<?= video.url ?>"><?!= video.displayName ?></a></div>
+    <? if (video.image && video.image.url) { ?>
+      <div><img src="<?= video.image.url ?>" /></div>
+    <? } ?>
+  <? } ?>
+</div>

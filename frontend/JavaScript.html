@@ -1,0 +1,217 @@
+<!-- Load the jQuery library client-side. -->
+<script src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
+<!-- Load the jQuery UI library client-side -->
+<script src="https://code.jquery.com/ui/1.10.0/jquery-ui.min.js"></script>
+
+<!-- Load the Underscore.js library client-side. -->
+<? Underscore.include(output) ?>
+
+<!-- Client-side JavaScript code. -->
+<script>
+  // The maximum number of items to include in the feed preview.
+  var MAX_PREVIEW_ITEMS = 10;
+
+  // When the page loads.
+  $(document).ready(function() {
+    // Bind the preview button click and form submit events.
+    $('#preview, #control-form').bind('click submit', function() {
+      var type = $('input[name=type]:checked').val();
+      var input = $('#input').val();
+      preview(type, input);
+      return false;
+    });
+
+    // Bind the type radio button change event.
+    $('input[name=type]').bind('change', function() {
+      if (this.value == 'user') {
+        $('#input-user').show();
+        $('#input-query').hide();
+      } else {
+        $('#input-query').show();
+        $('#input-user').hide();
+      }
+    });
+
+    // Bind the input text change event.
+    $('input[name=type], input[name=input]').bind('change', function() {
+       setAddDisabled(true);
+    });
+
+    // Bind the add button click event.
+    $('#add').bind('click', function() {
+      var type = $('input[name=type]:checked').val();
+      var input = $('#input').val();
+      var name = $('#name').val();
+      addFeed(type, input, name);
+      return false;
+    });
+
+    // Bind the message dismiss link click event.
+    $('#dismiss').bind('click', function() {
+      clearMessages();
+      return false;
+    });
+
+    // Bind the privacy policy link.
+    $('#privacy-policy-link').bind('click', function() {
+      $("#privacy-policy").dialog();
+    });
+
+    // Load the library automatically.
+    loadLibrary();
+
+    // Load the number of feeds.
+    google.script.run.withSuccessHandler(function(result) {
+      $('#num-feeds').text(result);
+    }).withFailureHandler(showError).getNumFeeds();
+  });
+
+  /**
+   * Loads a preview of the feed using the current type and input.
+   * @param {string} type The type of feed.
+   * @param {string} input The feed input.
+   */
+  function preview(type, input) {
+    clearMessages();
+    var preview = $('#preview-container');
+    preview.html('Loading...');
+    google.script.run.withSuccessHandler(function(result) {
+      preview.empty();
+      preview.append('<h3>' + result.title + '</h3>');
+      $('#name').val(result.title);
+      if (result.items.length > 0) {
+        $(result.items).each(function(index, item) {
+          var div = $('<div class="item"></div>');
+          div.html(item);
+          preview.append(div);
+          setAddDisabled(false);
+        });
+      } else {
+        preview.append('No matching posts were found.');
+      }
+    }).withFailureHandler(function(error) {
+      preview.text('Failed to load preview.');
+      showError(error);
+    }).getPreview(type, input, MAX_PREVIEW_ITEMS);
+  }
+
+  /**
+   * Adds a feed to the user's library.
+   * @param {string} type The type of feed.
+   * @param {string} input The feed input.
+   * @param {string} name The name of the feed.
+   */
+  function addFeed(type, input, name) {
+    clearMessages();
+    showInfo('Adding feed...');
+    google.script.run.withSuccessHandler(function(url) {
+      showInfo('Feed added.');
+      loadLibrary();
+    }).withFailureHandler(function(error) {
+      showError(error);
+    }).addFeed(type, input, name);
+  }
+
+  /**
+   * Deletes a feed from the user's library.
+   * @param {string} feedId The ID of the feed.
+   */
+  function deleteFeed(feedId) {
+    showInfo('Deleting feed...');
+    google.script.run.withSuccessHandler(function() {
+      showInfo('Feed deleted.');
+      loadLibrary();
+    }).withFailureHandler(function(error) {
+      showError(error);
+    }).deleteFeed(feedId);
+  }
+
+  /**
+   * Load the user's library of feeds.
+   */
+  function loadLibrary() {
+    var library = $('#library-container');
+    library.text('Loading...');
+    google.script.run.withSuccessHandler(function(results) {
+      library.empty();
+      if (results.length > 0) {
+        library.append(renderLibraryTable_(results));
+      } else {
+        library.append('<p>None</p>');
+      }
+    }).withFailureHandler(function(error) {
+      library.text('Failed to load.');
+      showError(error);
+    }).getFeeds();
+  }
+
+  /**
+   * Renders the HTML of the library table.
+   * @param {Array.<Object>} feeds The feeds to render.
+   * @returns {HtmlTableElement} The renderd table.
+   * @private
+   */
+  function renderLibraryTable_(feeds) {
+    var table = $('<table></table>');
+    $(feeds).each(function(index, feed) {
+      var div = $('<div class="feed"></div>');
+      var columns = [];
+      columns.push(feed.name);
+      columns.push(_.sprintf('<a target="_blank" href="%s">RSS</a>', feed.url));
+      columns.push(_.sprintf('<a target="_blank" href="http://cloud.feedly.com/#subscription%%2Ffeed%%2F%s">Feedly</a>', encodeURIComponent(feed.url)));
+      columns.push(_.sprintf('<button data-feedid="%s">Delete</button>', feed.id));
+      var columnsHtml =  $.map(columns, function(title, index) {
+        if (index == 0) {
+          return _.sprintf('<td class="first">%s</td>', title);
+        } else {
+          return _.sprintf('<td>%s</td>', title);
+        }
+      }).join('');
+      table.append(_.sprintf('<tr>%s</tr>', columnsHtml));
+    });
+    $(table).find('button').bind('click', function() {
+      deleteFeed($(this).data('feedid'));
+    });
+    return table;
+  }
+
+  /**
+   * Show an informational message.
+   * @param {string} message The message to display.
+   */
+  function showInfo(message) {
+    $('#message').addClass('info').removeClass('error');
+    showMessage_(message);
+  }
+
+  /**
+   * Show an error message.
+   * @param {string} message The message to display.
+   */
+  function showError(message) {
+    $('#message').addClass('error').removeClass('info');
+    showMessage_(message);
+  }
+
+  /**
+   * Show a message.
+   * @param {string} message The message to display.
+   * @private
+   */
+  function showMessage_(message) {
+    $('#message-content').text(message);
+    $('#message').show();
+  }
+
+  /**
+   * Clears any messages.
+   */
+  function clearMessages() {
+    $('#message').hide();
+  }
+
+  function setAddDisabled(disabled) {
+    $('#add').attr('disabled', disabled);
+    $('#name').attr('disabled', disabled);
+  }
+</script>

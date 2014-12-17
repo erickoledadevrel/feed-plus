@@ -1,0 +1,15 @@
+<table>
+  <tr>
+    <? if (photo) { ?>
+      <td style="vertical-align:top; padding-right:1em;">
+        <a href="<?= article.url ?>"><img style="max-width:150px;" src="<?= photo.image.url ?>"/></a>
+      </td>
+    <? } ?>
+    <td style="vertical-align:top;">
+      <div style="margin-bottom:1em;">
+        <a href="<?= article.url ?>" style="font-weight:bold"><?!= article.displayName ?></a>
+      </div>
+      <div><?= article.content || '' ?></div>
+    </td>
+  </tr>
+</table>
