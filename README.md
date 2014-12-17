@@ -1,9 +1,11 @@
 # Feed+
 
 Feed+ is a sample web application, built using Google Apps Script, that allows
-users to create RSS feeds from a Google+ profile or search. The application is
-split into two components, each of which is its own Apps Script project deployed
-as a web app.
+users to create RSS feeds from a Google+ profile or search. A hosted version of
+this app is
+[available here](https://script.google.com/macros/s/AKfycby-KOzuotva72PMUG57zIJl16Sa_iu17GHU6d2VdubRQTxmGGU/exec).
+The application is split into two components, each of which is its own Apps
+Script project deployed as a web app.
 
 ## Frontend
 
@@ -13,7 +15,7 @@ user sees only the feeds they created.
 
 This script uses the following libraries:
 
-- Underscore: MGwgKN2Th03tJ5OdmlzB8KPxhMjh3Sh48
+- Underscore: `MGwgKN2Th03tJ5OdmlzB8KPxhMjh3Sh48`
 - Feed+ Backend: Use the project ID of the backend scrip described below
 
 This script expected the following script properties to be set:
@@ -32,8 +34,9 @@ information.
 
 This scrupt uses the following libraries:
 
-- Underscore: MGwgKN2Th03tJ5OdmlzB8KPxhMjh3Sh48
-- ParseDb: MxhsVzdWH6ZQMWWeAA9tObPxhMjh3Sh48
+- Underscore: `MGwgKN2Th03tJ5OdmlzB8KPxhMjh3Sh48`
+- [ParseDb](https://github.com/erickoledadevrel/parsedb):
+  `MxhsVzdWH6ZQMWWeAA9tObPxhMjh3Sh48`
 
 This script expected the following script properties to be set:
 
