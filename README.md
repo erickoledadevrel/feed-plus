@@ -1,4 +1,6 @@
-# Feed+
+# DEPRECATED: Feed+
+
+This repo is deprecated and no longer functions. Parse has been shut down and Google+ is scheduled to be as well.
 
 Feed+ is a sample web application, built using Google Apps Script, that allows
 users to create RSS feeds from a Google+ profile or search. A hosted version of
